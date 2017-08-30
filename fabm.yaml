@@ -101,7 +101,7 @@ instances:
       Bhan:   B_BACT/Bhan
       Hplus:  B_pH/Hplus
     parameters:
-      K_phy_gro: 4.5 #3. #4.7
+      K_phy_gro: 4.5 #3. #4.5
         # Maximum specific growth rate (1/d) = 0.9-1.3 (Savchuk, 2002), 
         # = 3.(Gregoire, Lacroix, 2001) >!0.5 worked for Berre! 
       Iopt: 25.      
@@ -127,8 +127,8 @@ instances:
       K_nfix: 0.4           #! Maximum specific rate of N-fixation (1/d) =0.5 (Savchuk, 2002)
       K_po4_lim: 0.012      #! Half-sat. constant for uptake of PO4 by Phy
       K_si_lim: 0.5         #! Half-sat. constant for uptake of Si_lim by Phy
-      K_PON_DON: 0.18       #! Specific rate of Autolysis of PON to DON
-      K_PON_ox: 0.01       #! Specific rate of oxidation of PON with O2
+      K_PON_DON: 0.15       #! Specific rate of Autolysis of PON to DON
+      K_PON_ox: 0.05       #! Specific rate of oxidation of PON with O2
       K_DON_ox: 0.15        #! Specific rate of oxidation of DON with O2
       K_omox_o2: 1.         #! half sat. of o2 for OM mineralization
       Wsed: 7.0        #! Rate of sinking of detritus (m/d), =0.4 (Savchuk, 2002), =5. (Gregoire, Lacroix, 2001), =1-370 (Alldredge, Gotschalk, 1988)
@@ -188,7 +188,7 @@ instances:
       K_Bhae_mrt:  0.001      #!  Bhae specific rate of mortality (1/d) (Yakushev, 2013)
       K_Bhae_mrt_h2s: 0.799  #!  Bhae increased specific rate of mortality due to H2S (1/d)  (Yakushev, 2013)      
       limBhae: 5.0           #! Limiting parameter for OM consumprion by Bhae (nd) (Yakushev, 2013)
-      K_Baan_gro: 0.1         #!  Baan maximum specific growth rate (1/d) (Yakushev, 2013)
+      K_Baan_gro: 0.5         #!  Baan maximum specific growth rate (1/d) (Yakushev, 2013)
       K_Baan_mrt: 0.005      #!  Baan specific rate of mortality (1/d) (Yakushev, 2013)
       limBaan: 5.0           #! Limiting parameter for nutrient consumprion by Baan (nd) (Yakushev, 2013)
       K_Bhan_gro: 0.20       #!  Bhan maximum specific growth rate (1/d) (Yakushev, 2013)
@@ -304,12 +304,13 @@ instances:
     long_name: iron
     model: niva/brom_fe
     initialization:
-      Fe2:    0.5
-      Fe3:    0.0
-      FeS:    0.0
-      FeCO3:  0.0
-      FeS2:   0.0
+      Fe2:     0.0
+      Fe3:     0.0
+      FeS:     0.0
+      FeCO3:   0.0
+      FeS2:    0.0
       Fe3PO42: 0.0
+      PO4_Fe3: 0.0
     coupling:
       Mn2:   B_Mn/Mn2
       Mn3:   B_Mn/Mn3
@@ -325,62 +326,61 @@ instances:
       DON:   B_BIO/DON
       PON:   B_BIO/PON
       Hplus: B_pH/Hplus
-    parameters:
-      Wm: 10.0
-        # Rate of accel. sink. of part. with settled metal hydroxides (1/d)
-      K_fe_ox1: 0.5
-        # Specific rate of oxidation of Fe2 to Fe3  with O2 (1/d)
-      K_fe_ox2: 0.001
-        # Specific rate of oxidation of Fe2 to Fe3  with MnO2 and Mn(III) (1/d)
-      K_fe_rd: 0.5
-        # Specific rate of reduction of Fe3 to Fe2  with H2S (1/day)
-      K_fes: 2510.0e6
-        # FeS equilibrium constant
-      K_fes_form: 5.e-4
-        # Specific rate of precipitation of FeS from Fe2 with H2S (1/day)
-      K_fes_diss: 1.e-5 #1.e-6
-        # Specific rate of dissollution of FeS to Fe2 and H2S  (1/day)
-      K_fes_ox: 0.001
-        # Specific rate of oxidation of FeS with O2 (1/day)
-      K_DON_fe: 0.00005
-        # Specific rate of oxidation of DON with Fe3 (1/day)
-      K_PON_fe: 0.00001
-        # Specific rate of oxidation of PON with Fe3 (1/day)
-      K_fes2_form: 0.000001
-        # Specific rate of FeS2 formation by FeS oxidation by H2S (1/day)
-      K_fes2_ox: 0.00044
-        # Specific rate of pyrite oxidation by O2 (1/uM/d)
-      s_feox_fe2: 0.001
-        # Threshold of Fe2 reduciton
-      s_ferd_fe3: 0.01
+    parameters: 
+      Wm: 10.0 # (m/d)
+        # Rate of accel. sink. of part. with settled metal hydroxides
+      K_fe_ox1: 0.5 # (1/d)
+        # Specific rate of oxidation of Fe2 to Fe3  with O2:  1.e9 (M/yr) (Boudrau, 1996)
+      K_fe_ox2: 0.001 # (1/d)
+        # Specific rate of oxidation of Fe2 to Fe3  with MnO2 and Mn(III):
+      K_fe_rd: 0.5 # (1/d)
+        # Specific rate of reduction of Fe3 to Fe2  with H2S:
+      K_fes: 2510. # (uM)
+        # FeS equilibrium constant: 2.51e-6 mol/cm3  (Katsev, 2006)
+      K_fes_form: 5.e-6 #5.e-4 # (1/d)
+        # Specific rate of precipitation of FeS from Fe2 with H2S: 4.e-5 (mol/g/yr)  (Katsev, 2006)
+      K_fes_diss: 2.7e-6 # (1/d)
+        # Specific rate of dissollution of FeS to Fe2 and H2S: 1.e-3 (1/yr) (Katsev, 2006)
+      K_fes_ox: 0.001 # (1/d)
+        # Specific rate of oxidation of FeS with O2: 2.e7 - 3.e5 (M/yr) (VanCapellan, 1996)
+      K_DON_fe: 0.00005 # (1/d)
+        # Specific rate of oxidation of DON with Fe3 (1/day) 5.e-5 (1/d) (Boudrau, 1996)
+      K_PON_fe: 0.00001 # (1/d)
+        # Specific rate of oxidation of PON with Fe3 (1/day) 1.e-5 (1/d) (Boudrau, 1996)
+      K_fes2_form: 0.000001 # (1/d)
+        # Specific rate of FeS2 formation by FeS oxidation by H2S: 9.e-6 (M/d) (Rickard, Luther, 1997)
+      K_fes2_ox: 0.00044 # (1/d)
+        # Specific rate of pyrite oxidation by O2: .00044 (1/d) (Bektursunova, 2011)
+      s_feox_fe2: 0.001 # (uM Fe)
+        # Threshold of Fe2 oxidation
+      s_ferd_fe3: 0.01 # (uM Fe)
         # Threshold of Fe3 reduciton (uM Fe)
-      K_feco3: 15.e6 
-        # Conditional equilibrium constant (15 uM2)
-        # for Mn2+CO3->FeCO3 (Meysman,2003)  (uM)
-      K_feco3_diss: 7.e-4
-        # Specific rate of dissolution of FeCO3 (1/day)
-      K_feco3_form: 3.e-4
-        # Specific rate of formation of FeCO3 (1/day)
-      K_feco3_ox: 0.0027
-        # Specific rate of oxidation of FeCO3 with O2 (1/day)
-      K_fe3po42: 18000.   
-        #! Conditional equilibrium constant %  1.8e-11 (M) (Internet)  1 uM2 for Mn2+CO3->FeCO3 (Meysman,2003)
-      K_fe3po42_diss: 6.8e-7
-        #!Specific rate of dissolution of FeCO3 (1/day)=6.8e-7   !2.5 X 10-1 yr-1 (Van Cappellen, Wang, 1996) !1x10-4 yr-1 (Hunter et al, 98)
-      K_fe3po42_form: 2.7e-7
-        #!Specific rate of formation of FeCO3 (1/day)=2.7e-7  !! 1. X 10-4 yr-1(Van Cappellen, Wang, 1996)!1x10-4 yr-1 (Hunter et al, 98)
-      K_fe3po42_ox: 0.0027
-        #!Specific rate of oxidation of FeCO3 with O2 (1/day)=0.0027  ( 1x10^(-6) M/yr (Van Cappellen, Wang, 1996)
-      K_ferd_hs:  1.0
-        # half sat. of Fe reduction (uM S)
-      K_omno_no3: 0.001 
-        # Half sat. of no3 for OM denitr. (uM N)
-      O2s_dn: 10.0
-        # Threshold of O2 for denitrification, anammox, Mn reduction (uM O2)
+      K_feco3: 4000. (uM2)
+        # Conditional equilibrium constant for FeCO3: 4.e-15 ((mol/cm3)2) (Katsev, 2006)
+      K_feco3_diss: 7.e-4 # (1/d)
+        # Specific rate of dissolution of FeCO3: 2.5e-1 - 1.e-2 (1/yr) (Wersin, 1990)
+      K_feco3_form: 3.e-6 #3.e-4 # (1/d)
+        # Specific rate of formation of FeCO3: 1.e-6 - 1.e-2 (mol/g/yr) (Wersin, 1990)
+      K_feco3_ox: 0.0027 # (1/d)
+        # Specific rate of oxidation of FeCO3 with O2: (assumed)
+      K_fe3po42: 1800. #0.018 #0.18 #180. # (uM**5)
+        #! Conditional equilibrium constant for Fe3PO4: 3.e-50 (mol/cm3)^5  (Katsev, 2006)
+      K_fe3po42_diss: 2.7e-2 #2.7e-3 # (1/d)
+        #!Specific rate of dissolution for Fe3PO4: 1. (1/yr)  (Katsev, 2006)
+      K_fe3po42_form: 1e-11 #1e-9 # (1/d)
+        #!Specific rate of formation for Fe3PO4: 1.7e-9 (mol/g/yr)  (Katsev, 2006)
+      K_fe3po42_ox: 0.0027 # (1/d)
+        #!Specific rate of oxidation of FeCO3 with O2: (assumed)
+      K_ferd_hs:  1.0 # (uM S)
+        # half sat. of Fe reduction: (assumed)
+      K_omno_no3: 0.001 # (uM N)
+        # Half sat. of no3 for OM denitr.: (assumed)
+      O2s_dn: 10.0 # (uM O2)
+        # Threshold of O2 for denitrification, anammox, Mn reduction: (assumed)
       r_n_p: 16.0  # N[uM]/P[uM]
       r_c_n: 8.0   # C[uM]/N[uM]
       r_fe_n: 26.5 # Fe[uM]/N[uM] (Boudrau, 1996)
-      r_fe3_p: 2.7
+      r_fe3_p: 27000. #2.7
         # Fe[uM]/P[uM] partitioning coeff. for Fe oxide (Yakushev, 2007)
       r_fe3_si: 300000.
         #! Fe[uM]/Si[uM] partitioning coeff. for Fe oxide
@@ -390,15 +390,16 @@ instances:
     long_name: manganese
     model: niva/brom_manganese
     initialization:
-      Mn2:    0.5
+      Mn2:    0.0
       Mn3:    0.0
       Mn4:    0.0
       MnS:    0.0
       MnCO3:  0.0
+      PO4_Mn3: 0.0
     coupling:
       S0:    B_S/S0
       H2S:   B_S/H2S
-      DIC:   B_C/DIC # carbon dioxide (mmol C/m^3)
+      DIC:   B_C/DIC
       PO4:   B_NUT/PO4
       NH4:   B_NUT/NH4
       O2:    B_BIO/O2
@@ -406,54 +407,54 @@ instances:
       PON:   B_BIO/PON
       Hplus: B_pH/Hplus
     parameters:
-      Wm: 10.0
-       # Rate of accel. sink. of part. with settled metal hydroxides (1/d)
-      K_mn_ox1: 0.1
-        # Specific rate of oxidation of Mn2 to Mn3 with O2 (1/d)
-      K_mn_ox2: 0.4
-        # Specific rate of oxidation of Mn3 to Mn4 with O2 (1/d)
-      K_mn_rd1: 0.5
-        # Specific rate of reduction of Mn4 to Mn3 with H2S (1/d)
-      K_mn_rd2: 2.0
-        # Specific rate of reduction of Mn3 to Mn2 with H2S (1/d)
-      K_mns:    1500.e3
-        # Conditional equilibrium constant for MnS from Mn2 with H2S (M)
-      K_mns_diss: 0.0005
-        # Specific rate of dissolution of MnS to Mn2 and H2S (1/d)
-      K_mns_form: 0.00001
-        # Spec. rate of form. of MnS from Mn2 with H2S (1/d)
-      K_mns_ox: 0.0027
-        # Specific rate of oxidation of MnS with O2 (1/d)
-      K_mnco3: 1.e6
-        # Conditional equilibrium constant (uM2) for Mn2+CO3->MnCO3 (Meysman,2003)
-      K_mnco3_diss: 7.e-4
-        # Specific rate of dissolution of MnCO3 (1/d)
-      K_mnco3_form: 3.e-4
-        # Specific rate of formation of MnCO3 (1/d)
-      K_mnco3_ox: 0.0027
-        # Specific rate of oxidation of MnCO3 with O2 (1/d)
-      K_DON_mn: 0.0001
-        # Specific rate of oxidation of DON with Mn4 (1/d)
-      K_PON_mn: 0.0001
-        # Specific rate of oxidation of PON with Mn4 (1/d)
-      s_mnox_mn2: 0.01
-        # threshold of Mn2 oxidation (uM Mn)
-      s_mnox_mn3: 0.01
-        # threshold of Mn3 oxidation (uM Mn)
-      s_mnrd_mn4: 0.01
-        # threshold of Mn4 reduciton (uM Mn)
-      s_mnrd_mn3: 0.01
-        # threshold of Mn3 reduciton  (uM Mn)
-      O2s_dn: 10.0
-        # Threshold of O2 for denitrification, anammox, Mn reduction (uM O2)
-      K_mnrd_hs: 1.0
-        # half sat. of Mn reduction (uM S)
-      K_mnox_o2: 2.0
-        # Half sat. of Mn oxidation (uM O2)
+      Wm: 10.0 # (m/d)
+        # Rate of accel. sink. of part. with settled metal hydroxides
+      K_mn_ox1: 0.1 # (1/d)
+        # Specific rate of oxidation of Mn2 to Mn3 with O2 (Tebo,1991,Yakushev,2007)
+      K_mn_ox2: 0.2 # (1/d)
+        # Specific rate of oxidation of Mn3 to Mn4 with O2 (Tebo,1991,Yakushev,2007)
+      K_mn_rd1: 0.2 #0.5 # (1/d)
+        # Specific rate of reduction of Mn4 to Mn3 with H2S (Tebo,1991,Yakushev,2007)
+      K_mn_rd2: 0.2 #0.5 #1.0 # (1/d)
+        # Specific rate of reduction of Mn3 to Mn2 with H2S (Tebo,1991,Yakushev,2007)
+      K_mns:  1500. #7.4e-12 # (uM)
+        # Conditional equilibrium constant for MnS from Mn2 with H2S (M) 7.4e-18 M (Brezonik, 2011)
+      K_mns_diss: 0.0005 # (1/d)
+        # Specific rate of dissolution of MnS to Mn2 and H2S (assumed)
+      K_mns_form: 1.e-6 #0.0001 # (1/d)
+        # Spec. rate of form. of MnS from Mn2 with H2S (assumed)
+      K_mns_ox: 0.0027 # (1/d)
+        # Specific rate of oxidation of MnS with O2 (assumed)
+      K_mnco3: 1800 #18. # (uM2)
+        # Conditional equilibrium constant for MnCO3 1.e-10 - 1.e-13 (M2) (Jensen, 2002)
+      K_mnco3_diss: 7.e-4 # (1/d)
+        # Specific rate of dissolution of MnCO3 1.e-2 - 1.e3 (1/yr) (Wersin, 1990)
+      K_mnco3_form: 3.e-6 #3.e-4 # (1/d)
+        # Specific rate of formation of MnCO3 1.e-4 - 1.e-2 (mol/g/yr) (Wersin, 1990)
+      K_mnco3_ox: 0.0027 # (1/d)
+        # Specific rate of oxidation of MnCO3 with O2 (assumed)
+      K_DON_mn: 0.0001 # (1/d)
+        # Specific rate of oxidation of DON with Mn4 (assumed)
+      K_PON_mn: 0.0001 # (1/d)
+        # Specific rate of oxidation of PON with Mn4 (assumed)
+      s_mnox_mn2: 0.01 # (uM Mn)
+        # threshold of Mn2 oxidation (Yakushev, 2007)
+      s_mnox_mn3: 0.01 # (uM Mn)
+        # threshold of Mn3 oxidation (Yakushev, 2007)
+      s_mnrd_mn4: 0.01 # (uM Mn)
+        # threshold of Mn4 reduciton  (Yakushev, 2007)
+      s_mnrd_mn3: 0.01 # (uM Mn)
+        # threshold of Mn3 reduciton  (Yakushev, 2007)
+      O2s_dn: 10.0 # (uM O2)
+        # Threshold of O2 for denitrification, anammox, Mn reduction (Yakushev, 2007)
+      K_mnrd_hs: 1.0 # (uM S)
+        # half sat. of Mn reduction (uM S) (Yakushev, 2007)
+      K_mnox_o2: 2.0 # (uM O2)
+        # Half sat. of Mn oxidation (uM O2) (Yakushev, 2007)
       r_mn_n: 13.25
         # Mn[uM]/N[uM] (Boudrau, 1996)
-      r_mn3_p: 100000. #0.67
-        # Mn[uM]/P[uM] complex stoichiometric coeff. for Mn(III)
+      r_mn3_p: 27. #2.7 #0.67
+        # Mn[uM]/P[uM] complex stoichiometric coeff. for Mn(III) (Yakushev, 2007)
       r_n_p: 16.0  # N[uM]/P[uM]
       r_c_n: 8.0   # C[uM]/N[uM]
 #----------------------------------------------------------------------
@@ -468,13 +469,13 @@ instances:
     parameters:
       Wsed: 7.0 # Rate of sinking of detritus (m/d)
         # Sinking (Gregoire, Lacroix, 2001)
-      K_sipart_diss: 0.06
+      K_sipart_diss: 0.05
         # Si particulate biogenic dissollution rate constant (1/d) 0.08 (Popova,2004)
-      K_sipart_diss_limit: 30.
+      K_sipart_diss_limit: 50.
         # Si particulate maximum concentration (uM), that is biogenic and can be dissolved 
       K_sipart_to_minerals: 0.9
         # Si_part transformation into minerals not modeled here (1/d) (DeMaster, 2003)
-      Si_diss_max: 800.
+      Si_diss_max: 1000.
         # Max conc. of diss Si for precipitation (mmol/m**3) (Strakhov, 1978)
 #----------------------------------------------------------------------
   B_Ba:

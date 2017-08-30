@@ -2,5 +2,10 @@ BROM_out.nc
 finish.dat
 Hydrophysics.dat
 Vertical_grid.dat
-BROM_Baltic_out.nc
+*_out.nc
 brom.exe
+*.py
+*.pyc
+*.png
+*.dat
+*.txt
