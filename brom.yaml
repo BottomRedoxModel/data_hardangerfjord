@@ -13,10 +13,10 @@ instances:
       hz_sed_min: 0.001           # Minimum layer thickness in the sediments near the SWI [m] (default = 0.0005 m)
       hz_sed_max: 0.02            # Maximum layer thickness deeper in the sediments [m] (default = 0.01 m)
       k_min: 3 #3                    # Minimum k number defining the layer that is in contact with the atmosphere (default = 1) 
-      k_points_below_water: 11   #10    # Number of levels below the water/BBL boundary (default = 20)
+      k_points_below_water: 10   #10    # Number of levels below the water/BBL boundary (default = 20)
       i_min: 1                    # Minimum i number (default = 1)
-      i_water: 31 #11                  # Number of i for water column (default = 1)       
-      i_max: 31 #11    #31 good for HF , 11 for test               # Maximum i number  (default = 1)
+      i_water: 41 #16 #31 #11                  # Number of i for water column (default = 1)       
+      i_max:   41 #16 #31 #11    #31 good for HF , 11 for test               # Maximum i number  (default = 1)
 #Note: (i_min,i_water,i_max) should be (1,1,1) for 1D applications
 #
 #
@@ -36,8 +36,8 @@ instances:
 #            a2top_B_NUT_NO3: 3.0
 #            a3top_B_NUT_NO3: 60.
 #     3 for arbitrary Dirichlet, read from netCDF file (see I/O options to specify netCDF variable names)
+#
 #     4 for arbitrary Dirichlet, read from ASCII file or calculated as a function of salinity (i.e. for Alk, SO4)
-#     5 surface SO4 is calculated from SO4/Salinity ratio
 #
       bctype_bottom_B_BIO_O2: 1
       bc_bottom_B_BIO_O2: 0.
@@ -50,36 +50,30 @@ instances:
       bc_bottom_B_S_SO4: 15000. # HF
 #
       bctype_top_B_Mn_Mn4: 1
-      bc_top_B_Mn_Mn4: 0.05E-6
+      bc_top_B_Mn_Mn4: 0.05E-5
       bctype_bottom_B_Mn_Mn2: 1
-      bc_bottom_B_Mn_Mn2: 400. # HF
+      bc_bottom_B_Mn_Mn2: 80. # HF
 #
       bctype_top_B_Fe_Fe3: 1
-      bc_top_B_Fe_Fe3: 5.E-6
+      bc_top_B_Fe_Fe3: 0.5E-5
       bctype_bottom_B_Fe_Fe2: 1
-      bc_bottom_B_Fe_Fe2: 600. # HF
+      bc_bottom_B_Fe_Fe2: 120. # HF
 #
       bctype_top_B_C_Alk: 1
-      bc_top_B_C_Alk: 2400. #2380
+      bc_top_B_C_Alk: 2300 #2380.
       bctype_bottom_B_C_Alk: 1
-      bc_bottom_B_C_Alk: 1000. #3500. # HF
+      bc_bottom_B_C_Alk: 4000. # HF 3500. # HF
 #
+#      bctype_bottom_B_C_DIC: 1
+#      bc_bottom_B_C_DIC: 2850.
       bctype_bottom_B_C_DIC: 1
-      bc_bottom_B_C_DIC: 45
-	  000. #9000. # HF
+      bc_bottom_B_C_DIC: 8000. # HF
 #
-      bctype_top_B_BIO_DON: 2
-      a1top_B_BIO_DON: 4. 
-      a2top_B_BIO_DON: 4.
-      a3top_B_BIO_DON: 320.
       bctype_bottom_B_BIO_DON: 1
-      bc_bottom_B_BIO_DON: 350. #550. # HF 750
+      bc_bottom_B_BIO_DON: 400. # HF
 #
-      bctype_top_B_BIO_PON: 2
-      a1top_B_BIO_PON: 5. 
-      a2top_B_BIO_PON: 5.
-      a3top_B_BIO_PON: 320.
-#
+#      bctype_bottom_B_NUT_NH4: 1
+#      bc_bottom_B_NUT_NH4: 10.
       bctype_bottom_B_NUT_NH4: 1
       bc_bottom_B_NUT_NH4: 200. # HF
 #
@@ -95,18 +89,21 @@ instances:
       a2top_B_NUT_PO4: 0.8
       a3top_B_NUT_PO4: 320. #60.
       bctype_bottom_B_NUT_PO4: 1
-      bc_bottom_B_NUT_PO4: 30. # HF
+      bc_bottom_B_NUT_PO4: 25. # HF
 #
       bctype_top_B_NUT_Si: 2
-      a1top_B_NUT_Si: 5.
-      a2top_B_NUT_Si: 5.
-      a3top_B_NUT_Si: 500. #60.
+      a1top_B_NUT_Si: 6.
+      a2top_B_NUT_Si: 6.
+      a3top_B_NUT_Si: 320. #60.
       bctype_bottom_B_NUT_Si: 1
-      bc_bottom_B_NUT_Si: 300. # HF
+      bc_bottom_B_NUT_Si: 500. # HF
 #
-      bctype_top_B_Ba_BaSO4: 1
-      bc_top_B_Ba_BaSO4: 0.0
+#      bctype_top_B_Ba_BaSO4: 1
+#      bc_top_B_Ba_BaSO4: 0.0
 #
+#      bctype_bottom_B_BIO_DON: 1
+#      bc_bottom_B_BIO_DON: 1000.
+
       surf_flux_with_diff: 0   # 1 to include surface fluxes in diffusion update,
                                # 0 to include in biogeochemical update (default = 0)
       bott_flux_with_diff: 0   # 1 to include bottom fluxes in diffusion update,
@@ -120,16 +117,15 @@ instances:
 #
 # injection_rate
 #
-
       injection_swith : 1     # if 1- turn on injection, 0 - no injection (by default)
       inj_var_name :    B_BIO_PON  # niva_brom_ba_BaSO4 #
       # full name of variable for substance  you want to inject 
-      injection_rate : 3. #5.0 for baseline fishfarm #1. #2. 10.  # [mmol/sec] of substance
+      injection_rate : 5.0 for baseline fishfarm #1. #2. 10.  # [mmol/sec] of substance
 # fish farm: maximum 1.55 kgC/m2/(15 days), i.e. 5 mmolN/sec for 22m cage diameter (Corner et al., 2006)
       k_injection : 6         # number of layer to inject into
-      i_injection : 16        # number of column to inject into
-      start_inj : 1           # number of day to start injection
-      stop_inj : 365000        # number of  day to stop injection
+      i_injection : 21        # number of column to inject into
+      start_inj : 366           # number of day to start injection
+      stop_inj : 36500        # number of  day to stop injection
 #
 #
 ##---Horizontal transport parameters------------------------------------------------------------------
@@ -151,7 +147,7 @@ instances:
 ##---Horizontal relaxation (side mixing with climatic data) parameters------------------------------------------------------------------
 #
 #
-      hmix_rate_uniform: 80. #50. #250. # vertically uniform horizontal relaxation (and horizontal turbulence), 0 to exclude (default = 0)
+      hmix_rate_uniform: 50. #50. #250. # vertically uniform horizontal relaxation (and horizontal turbulence), 0 to exclude (default = 0)
                               # this is the horizontal "turbulence coefficient", that have different effect with different dx_adv
 #
 #Here we specify horizontal relaxation model using hmix_<variable name>
@@ -187,7 +183,7 @@ instances:
 ##---Constant forcings-----------------------------------------------------------------------------
       density: 1000.
       wind_speed: 8.     # Wind speed 10 m above sea surface [m/s] (default = 8 m/s) 
-      pco2_atm: 380.     # Atmospheric partial pressure of CO2 [ppm] (default = 380 ppm)
+      pco2_atm: 360.     # Atmospheric partial pressure of CO2 [ppm] (default = 380 ppm)
 #
 #
 ##---Surface irradiance model parameters-----------------------------------------------------------
@@ -249,7 +245,7 @@ instances:
       freq_sed:    1           # Sinking / bhc frequency (default = 1)
       year:        2013        # Selected year (for reading netCDF inputs)
       days_in_yr:  365         # Number of days in repeated period (typically 365 or 366, default = 365)
-      last_day:    3650 #3650 #7300 #       # Last day in simulation (~ days_in_yr * no. repeated years, default = 365)
+      last_day:    3650 #1460 #14600 #7300 #       # Last day in simulation (~ days_in_yr * no. repeated years, default = 365)
       cc0:         0.0         # Resilient (minimum) concentration for all variables [mmol/m3] (default = 1.0E-11 mmol/m3)
 #
 #
@@ -281,7 +277,7 @@ instances:
       mu0_musw:        0.94    # Inverse relative viscosity of saline pore water (default = 0.94 from Boudreau 1997 Table 4.10)
                                #   This relates the diffusivity in saline pore water to the infinite-dilution diffusivity
                                #   assuming the approximation from Li and Gregory (1974), see Boudreau (1997) equation 4.107
-      kz_bioturb_max:  1.E-11 # Maximum diffusivity due to bioturbation in the sediments [m2/s] (default = 1.0E-11 m2/s)
+      kz_bioturb_max:  0.05E-11 # Maximum diffusivity due to bioturbation in the sediments [m2/s] (default = 1.0E-11 m2/s)
                                #   Cf. range (1-100) cm2/yr = (0.3-30)E-11 m2/s cited in Soetaert and Middelburg (2009), citing Middelburg et al. (1997) 
                                #   This sets value for upper z_const_bioturb metres, then bioturbation diffusivity decays with scale z_decay_bioturb.
       z_const_bioturb: 0.0001   # "Mixed layer depth" in sediments over which bioturbation diffusivity = kz_bioturb_max [m] (default = 0.02 m)
@@ -313,13 +309,13 @@ instances:
       dynamic_w_sed:   1       # 0 without time-dependent burial velocities (default)
                                # 1 to enable time-dependent burial velocities in the sediments due to accelerate burying rate 
                                #   connected with an increase of particles volume dVV()[m3/sec] in the water layer just above SWI
-      w_binf:          0.5E-15 #-15 # Particulate background burial velocity deep in the sediments where phi = phi_inf [m/s] (default = 1.0E-10 m/s = 0.3 cm/year, but note that true values are highly variable)
+      w_binf:          0.5E-11 #-15 # Particulate background burial velocity deep in the sediments where phi = phi_inf [m/s] (default = 1.0E-10 m/s = 0.3 cm/year, but note that true values are highly variable)
                                #   Soetaert et al. (1996) propose a regression model as a function of water depth:
                                #   w = 982*D^-1.548, where D is water depth in [m] and w is in cm/year, e.g. for D = 100 m, w = 0.8 cm/year = 2.5E-10 m/s
                                #   Note: Shallow particulate and solute burial velocities are inferred by assuming steady state compaction (Boudreau, 1997)
-      bu_co:           0.01 #0.1   # "Burial coeficient" for setting velosity exactly to the SWI proportional to the 
+      bu_co:           0.0001   # "Burial coeficient" for setting velosity exactly to the SWI proportional to the 
                                #   settling velocity in the water column (0<bu_co<1), 0 - for no setting velosity at SWI (nd)
-      fresh_PM_poros:  0.993 #0.99997 #0.99995   # <1.0  porosity of fresh precipitated PM (i.e. dVV) 
+      fresh_PM_poros:  0.99    # <0.99  porosity of fresh precipitated PM (i.e. dVV) 
 #
 #
 ##---Porosity parameters---------------------------------------------------------------------------
@@ -327,10 +323,10 @@ instances:
 #   Porosity phi = phi_inf + (phi_0-phi_inf)*exp(-z_s/z_decay_phi), where z_s is depth below the SWI [m]
 #
       phi_0:           0.95    # Maximum porosity at the SWI (default = 0.95, following Soetaert et al., 1996)
-      phi_inf:         0.80    # Minimum porosity deep in the sediments (default = 0.80, following Soetaert et al., 1996)
+      phi_inf:         0.95    #0.80    # Minimum porosity deep in the sediments (default = 0.80, following Soetaert et al., 1996)
       z_decay_phi:     0.04    # Exponential decay scale for excess porosity in the upper sediments [m] (default = 0.04, following Soetaert et al., 1996)
       wat_con_0:       0.90    # Water content at the SWI
-      wat_con_inf:     0.50    # Water content deep in the sediments
+      wat_con_inf:     0.90    # Water content deep in the sediments
 #
 #
 ##---I/O options-----------------------------------------------------------------------------------
@@ -339,7 +335,7 @@ instances:
       ncoutfile_type: 1                          # netCDF output type, 0 write last year of calculation, 1 write all years
       sediments_units_convert: 0                 # 1(default) to convert concentrations from 'mass/total volume' into'mass/pore water ml' for dissolved and 'mass/mass' for solids
       outfile_name: finish.dat                   # ascii output file name
-      port_initial_state: 0                      # 0 to use FABM default (default), 1 to read from ascii file (icfile_name)
+      port_initial_state: 1                      # 0 to use FABM default (default), 1 to read from ascii file (icfile_name)
       icfile_name: start.dat                     # ascii initial condition file name (needed if port_initial_state = 1)
 #
 #The following are only used if reading input from netCDF (input_type = 2)
